@@ -57,14 +57,12 @@ class Kwel
                     $idx = implode(' ', $matches[0]);
                     $this->attr['kwel'][$idx] = trim($value);
                 }
-
             }
 
             return true;
         }
 
         return false;
-
     }
 
     /**
@@ -78,38 +76,10 @@ class Kwel
 
     public function setLocation()
     {
-        $this->attr['location']['lng'] = $this->getGps($this->exif["GPSLongitude"], $this->exif['GPSLongitudeRef']);
-        $this->attr['location']['lat'] = $this->getGps($this->exif["GPSLatitude"], $this->exif['GPSLatitudeRef']);
-    }
+        $loc = new Location($this->exif);
 
-    public function getLng() {
-        return $this->attr['location']['lng'];
-    }
-
-    public function getLat() {
-        return $this->attr['location']['lat'];
-    }
-
-    protected function getGps($exifCoord, $hemi)
-    {
-        $degrees = count($exifCoord) > 0 ? $this->gps2Num($exifCoord[0]) : 0;
-        $minutes = count($exifCoord) > 1 ? $this->gps2Num($exifCoord[1]) : 0;
-        $seconds = count($exifCoord) > 2 ? $this->gps2Num($exifCoord[2]) : 0;
-        $flip = ($hemi == 'W' or $hemi == 'S') ? -1 : 1;
-
-        return $flip * ($degrees + $minutes / 60 + $seconds / 3600);
-    }
-
-    protected function gps2Num($coordPart)
-    {
-        $parts = explode('/', $coordPart);
-        if (count($parts) <= 0)
-            return 0;
-
-        if (count($parts) == 1)
-            return $parts[0];
-
-        return floatval($parts[0]) / floatval($parts[1]);
+        $this->attr['location']['lng'] = $loc->getLng();
+        $this->attr['location']['lat'] = $loc->getLat();
     }
 
 }

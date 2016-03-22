@@ -82,4 +82,8 @@ class Kwel
         $this->attr['location']['lat'] = $loc->getLat();
     }
 
+    public function setImage($image) {
+        $this->attr['image'] = $image;
+    }
+
 }

@@ -36,7 +36,7 @@ class Csv
 
         $out = fopen('php://output', 'w');
 
-        fputcsv($out, array("lng", "lat", "microsiemens", "X1", "X2", "X3", "X4"));
+        fputcsv($out, array("lng", "lat", "microsiemens", "X1", "X2", "X3", "X4", "photo"));
 
         foreach ($this->csv_data as $data)
         {
@@ -46,7 +46,10 @@ class Csv
                     "{$data['kwel'][0]}",
                     "{$data['kwel'][1]}",
                     "{$data['kwel'][2]}",
-                    "{$data['kwel'][3]}"));
+                    "{$data['kwel'][3]}",
+                    "{$data['kwel'][4]}",
+                    "{$data['image']}"));
+
         }
 
         fclose($out);

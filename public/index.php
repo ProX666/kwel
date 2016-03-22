@@ -7,7 +7,7 @@ function __autoload($class)
 }
 
 // get all images
-$dirname = "G:/__STUDIE VAN HALL 2015 - 2016/jaar 2015-2016/stage/fotos/03 16 kwel/jpg/";
+$dirname = "G:/__STUDIE VAN HALL 2015 - 2016/jaar 2015-2016/stage/qgis/kwel/jpg/";
 $images = glob($dirname . "*.jpg");
 
 $csv = new Csv();
@@ -15,7 +15,6 @@ $csv = new Csv();
 foreach ($images as $image)
 {
     // only get images with integer value at beginning of ImageDescription (that is in microSiemens)
-
     $exif = exif_read_data($image);
 
     if ($kwel = new Kwel($exif)) {
@@ -23,6 +22,7 @@ foreach ($images as $image)
             $kwel->setDescription();
             if ($kwel->setKwelAttributes()) {
                 $kwel->setLocation();
+                $kwel->setImage($image);
                 $csv->addKwel($kwel->getKwelAttributes());
             }
 

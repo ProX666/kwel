@@ -42,12 +42,12 @@ class Kwel
 
         if (is_numeric($ms))
         {
-            // create empty array with 5 elements for: microsiemens, X1, X2, X3, X4
-            $this->attr['kwel'] = array_fill(0, 5, '');
+            // create zeroes array with 5 elements for: microsiemens, X1, X2, X3, X4
+            $this->attr['kwel'] = array_fill(0, 5, 0);
             // set microsiemens
             $this->attr['kwel'][0] = (integer) $ms;
 
-            // add kwel code X1, ... X4 if any on the right spot
+            // add kwel code X1, ... X4 if any as 1 on the right spot
             foreach ($arr as $value)
             {
                 if (strpos($value, 'X'))
@@ -55,7 +55,7 @@ class Kwel
                     // strip number and use it as index
                     preg_match_all('!\d+!', $value, $matches);
                     $idx = implode(' ', $matches[0]);
-                    $this->attr['kwel'][$idx] = trim($value);
+                    $this->attr['kwel'][$idx] = 1;
                 }
             }
 

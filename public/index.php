@@ -14,6 +14,7 @@ $csv = new Csv();
 
 foreach ($images as $image)
 {
+
     // only get images with integer value at beginning of ImageDescription (that is in microSiemens)
     $exif = exif_read_data($image);
 
@@ -22,7 +23,7 @@ foreach ($images as $image)
             $kwel->setDescription();
             if ($kwel->setKwelAttributes()) {
                 $kwel->setLocation();
-                $kwel->setImage($image);
+                $kwel->setImage($exif['FileName']);
                 $csv->addKwel($kwel->getKwelAttributes());
             }
 

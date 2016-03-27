@@ -4,18 +4,20 @@ class Csv
 {
 
     protected $csv_data;
+    protected $title;
 
-    function __construct()
+    public function __construct($title)
     {
         $this->csv_data = array();
+        $this->title = $title;
     }
 
-    public function addKwel($attr)
+    public function addData($attr)
     {
         $this->csv_data[] = $attr;
     }
 
-    public function getKwel() {
+    public function getData() {
         return $this->csv_data;
     }
 
@@ -28,15 +30,14 @@ class Csv
      *      ["lng"]=> float(6.5290033333333) ["lat"]=> float(53.157741666667) }
      *  }
      */
-    public function writeCsv()
+    public function writeKwelCsv()
     {
-        $title = 'Kwel';
         header("Content-type: text/csv");
-        header("Content-disposition: attachment;filename={$title}.csv");
+        header("Content-disposition: attachment;filename={$this->title}.csv");
 
         $out = fopen('php://output', 'w');
 
-        fputcsv($out, array("lng", "lat", "microsiemens", "X1", "X2", "X3", "X4", "photo"));
+        fputcsv($out, array("lng", "lat", "microsiemens", "X1", "X2", "X3", "X4", "photo", "text"));
 
         foreach ($this->csv_data as $data)
         {
@@ -48,7 +49,32 @@ class Csv
                     "{$data['kwel'][2]}",
                     "{$data['kwel'][3]}",
                     "{$data['kwel'][4]}",
-                    "{$data['image']}"));
+                    "{$data['image']}",
+                    "{$data['kwel'][5]}"
+                    ));
+
+        }
+
+        fclose($out);
+    }
+
+    public function writeInfoCsv()
+    {
+        header("Content-type: text/csv");
+        header("Content-disposition: attachment;filename={$this->title}.csv");
+
+        $out = fopen('php://output', 'w');
+
+        fputcsv($out, array("lng", "lat", "photo", "text"));
+
+        foreach ($this->csv_data as $data)
+        {
+                fputcsv($out, array(
+                    "{$data['location']['lng']}",
+                    "{$data['location']['lat']}",
+                    "{$data['image']}",
+                    "{$data['info']}"
+                    ));
 
         }
 

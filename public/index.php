@@ -10,24 +10,18 @@ function __autoload($class)
 $dirname = "G:/__STUDIE VAN HALL 2015 - 2016/jaar 2015-2016/stage/qgis/kwel/jpg/";
 $images = glob($dirname . "*.jpg");
 
-$csv = new Csv();
+// http://kwel.local/?action=kwel
+// http://kwel.local/?action=info
 
-foreach ($images as $image)
+
+switch ($_GET['action'])
 {
-
-    // only get images with integer value at beginning of ImageDescription (that is in microSiemens)
-    $exif = exif_read_data($image);
-
-    if ($kwel = new Kwel($exif)) {
-        if ($kwel->hasDescription()) {
-            $kwel->setDescription();
-            if ($kwel->setKwelAttributes()) {
-                $kwel->setLocation();
-                $kwel->setImage($exif['FileName']);
-                $csv->addKwel($kwel->getKwelAttributes());
-            }
-
-        }
-    }
+    case "info" :
+        $action = "info";
+        break;
+    case "kwel":
+    default:
+        $action = "kwel";
 }
-$csv->writeCsv();
+
+new Action($action, $images);

@@ -5,65 +5,45 @@ class Action
 
     protected $title;
     protected $images;
+    protected $action;
 
     public function __construct($action, $images)
     {
         $this->title = $action . "_data";
         $this->images = $images;
-        $this->{"$action"}();
+        $this->action = ucfirst($action);
+        $this->process();
     }
 
-    protected function kwel()
-    {
+    
+    protected function process() {
         $csv = new Csv($this->title);
 
         foreach ($this->images as $image)
         {
-            // only get kwel images with integer value at beginning of ImageDescription (that is in microSiemens)
             $exif = exif_read_data($image);
 
-            if ($kwel = new Data($exif))
+            if ($data = new Data($exif))
             {
-                if ($kwel->hasDescription())
+                if ($data->hasDescription())
                 {
-                    $kwel->setDescription();
-                    if ($kwel->setKwelAttributes())
+                    $data->setDescription();
+
+                    // create method name on type of action
+                    $dataFnct = "set{$this->action}Attributes";
+                    $cvsFnct = "write{$this->action}Csv";
+
+                    if ($data->$dataFnct())
                     {
-                        $kwel->setLocation();
-                        $kwel->setImage($exif['FileName']);
-                        $csv->addData($kwel->getAttributes());
+                        $data->setLocation();
+                        $data->setImage($exif['FileName']);
+                        $csv->addData($data->getAttributes());
                     }
                 }
             }
         }
-        $csv->writeKwelCsv();
+        $csv->$cvsFnct();
     }
 
-    protected function info()
-    {
-        $csv = new Csv($this->title);
-
-        foreach ($this->images as $image)
-        {
-            // only get text data images, so beginning is without Siemens data
-            $exif = exif_read_data($image);
-
-            if ($info = new Data($exif))
-            {
-                if ($info->hasDescription())
-                {
-                    $info->setDescription();
-                    if ($info->setInfoAttributes())
-                    {
-                        $info->setLocation();
-                        $info->setImage($exif['FileName']);
-                        $csv->addData($info->getAttributes());
-                    }
-                }
-            }
-        }
-
-        $csv->writeInfoCsv();
-    }
 
 }

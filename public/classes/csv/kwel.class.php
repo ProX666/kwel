@@ -14,16 +14,13 @@ Class Csv_Kwel extends Csv_Base
      */
     public function writeCsv()
     {
-        header("Content-type: text/csv");
-        header("Content-disposition: attachment;filename={$this->title}.csv");
+        parent::writeCsv();
 
-        $out = fopen('php://output', 'w');
-
-        fputcsv($out, array("lng", "lat", "microsiemens", "X1", "X2", "X3", "X4", "photo", "text"));
+        fputcsv($this->out, array("lng", "lat", "microsiemens", "X1", "X2", "X3", "X4", "photo", "text"));
 
         foreach ($this->csv_data as $data)
         {
-                fputcsv($out, array(
+                fputcsv($this->out, array(
                     "{$data['location']['lng']}",
                     "{$data['location']['lat']}",
                     "{$data['kwel'][0]}",
@@ -37,7 +34,7 @@ Class Csv_Kwel extends Csv_Base
 
         }
 
-        fclose($out);
+        parent::close();
     }
 
 }

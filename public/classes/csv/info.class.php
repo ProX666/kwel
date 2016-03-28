@@ -5,16 +5,13 @@ Class Csv_Info extends Csv_Base
 
     public function writeCsv()
     {
-        header("Content-type: text/csv");
-        header("Content-disposition: attachment;filename={$this->title}.csv");
+        parent::writeCsv();
 
-        $out = fopen('php://output', 'w');
-
-        fputcsv($out, array("lng", "lat", "photo", "text"));
+        fputcsv($this->out, array("lng", "lat", "photo", "text"));
 
         foreach ($this->csv_data as $data)
         {
-            fputcsv($out, array(
+            fputcsv($this->out, array(
                 "{$data['location']['lng']}",
                 "{$data['location']['lat']}",
                 "{$data['image']}",
@@ -22,7 +19,7 @@ Class Csv_Info extends Csv_Base
             ));
         }
 
-        fclose($out);
+        parent::close();
     }
 
 }

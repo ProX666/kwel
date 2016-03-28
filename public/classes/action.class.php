@@ -11,29 +11,27 @@ class Action
     {
         $this->title = $action . "_data";
         $this->images = $images;
-        $this->action = ucfirst($action);
+        $this->action = $action;
         $this->process();
     }
 
-    
     protected function process() {
-        $csv = new Csv($this->title);
+        $csvfactory = new Csv_Factory();
+        $csv = $csvfactory->create($this->action, $this->title);
+
+        $datafactory = new Data_Factory();
 
         foreach ($this->images as $image)
         {
             $exif = exif_read_data($image);
 
-            if ($data = new Data($exif))
+            if ($data = $datafactory->create($this->action, $exif))
             {
                 if ($data->hasDescription())
                 {
                     $data->setDescription();
 
-                    // create method name on type of action
-                    $dataFnct = "set{$this->action}Attributes";
-                    $cvsFnct = "write{$this->action}Csv";
-
-                    if ($data->$dataFnct())
+                    if ($data->setAttributes())
                     {
                         $data->setLocation();
                         $data->setImage($exif['FileName']);
@@ -42,7 +40,7 @@ class Action
                 }
             }
         }
-        $csv->$cvsFnct();
+        $csv->writeCsv();
     }
 
 

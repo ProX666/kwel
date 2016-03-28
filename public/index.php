@@ -1,9 +1,22 @@
 <?php
 
 // auto class loader
-function __autoload($class)
+//function __autoload($class)
+//{
+//    require_once 'classes/' . $class . '.class.php';
+//}
+
+function __autoload($class_name)
 {
-    require_once 'classes/' . $class . '.class.php';
+    $filename = str_replace('_', DIRECTORY_SEPARATOR, strtolower($class_name)).'.class.php';
+
+    $file = 'classes/' . $filename;
+
+    if ( ! file_exists($file))
+    {
+        return FALSE;
+    }
+    require_once $file;
 }
 
 // get all images

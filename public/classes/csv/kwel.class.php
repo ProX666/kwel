@@ -1,23 +1,18 @@
 <?php
 
+/**
+ * Csv_Kwel
+ *
+ * Write CSV file for kwel
+ */
 Class Csv_Kwel extends Csv_Base
 {
 
-    /**
-     * array(2) {
-     *  ["kwel"]=> array(5) {
-     *      [0]=> int(209) [1]=> string(0) "" [2]=> string(0) "" [3]=> string(0) "" [4]=> string(0) ""
-     *  }
-     *  ["location"]=> array(2) {
-     *      ["lng"]=> float(6.5290033333333) ["lat"]=> float(53.157741666667) }
-     *  }
-     */
     public function writeCsv()
     {
         parent::writeCsv();
 
         fputcsv($this->out, array("lng", "lat", "microsiemens", "X1", "X2", "X3", "X4", "photo", "text"));
-
         foreach ($this->csv_data as $data)
         {
                 fputcsv($this->out, array(

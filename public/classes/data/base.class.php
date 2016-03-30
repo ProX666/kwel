@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Base class for data processing on kwel or info
+ */
 class Data_Base
 {
 

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Location
+ *
+ * Convert exif GPS data to useable coords.
+ *
+ * http://stackoverflow.com/questions/2526304/php-extract-gps-exif-data
+ */
 class Location
 {
 

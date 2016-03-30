@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Csv_Info
+ *
+ * Write CSV file for info
+ */
 Class Csv_Info extends Csv_Base
 {
 

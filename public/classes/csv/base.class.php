@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Base class for writing CSV file
+ */
 class Csv_Base
 {
 
